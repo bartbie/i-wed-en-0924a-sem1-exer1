@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script type="module">
+        "use strict";
+        const getUser = () => {
+            const x = localStorage.getItem("user");
+            if (x == null) return null;
+            return JSON.parse(x) ?? null;
+        };
+        const setUser = (user) =>
+            localStorage.setItem("user", JSON.stringify(user));
+
+        const setGreeting = () => {
+            const user = getUser();
+            if (user == null) return;
+            const greet = document.createElement("h2");
+            greet.textContent = `hello ${user.name}`;
+            const info = document.createElement("p");
+            info.textContent = `your email is ${user.email}`;
+            document.getElementById("content").replaceChildren(greet, info);
+        };
+
+        document.getElementById("form").addEventListener("submit", (e) => {
+            e.preventDefault();
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            if (name == null || name == "") {
+                alert("Please provide a name!");
+                return;
+            }
+            if (email == null || email == "") {
+                alert("Please provide an email!");
+                return;
+            }
+            const user = {name, email};
+            console.log(user);
+            setUser(user);
+            setGreeting();
+        });
+
+        window.addEventListener("load", () => {
+            setGreeting();
+        });
+    </script>
+</head>
+
+<body>
+    <!-- ngl i actually like web1 aesthetic of not doing any styles -->
+    <nav></nav>
+    <br />
+    <main>
+        <div id="content">
+            <form id="form">
+                <label for="name"> Username: </label>
+                <br />
+                <input required id="name" type="text" />
+                <br />
+
+                <label for="email"> email: </label>
+                <br />
+                <input required id="email" type="text" />
+                <br />
+
+                <button id="submit" type="submit">Submit</button>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>
