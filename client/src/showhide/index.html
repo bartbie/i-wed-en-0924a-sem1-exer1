@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        .visible {
+            display: block;
+        }
+    </style>
+    <script type="module">
+        const text = document.getElementById("message");
+        const flip = () => {
+            text.classList.toggle("hidden");
+            text.classList.toggle("visible");
+            console.log("flipped");
+        };
+        const button = document.getElementById("thebutton");
+        button.addEventListener("mouseover", () => flip());
+        button.addEventListener("mouseout", () => flip());
+    </script>
+</head>
+
+<body>
+    <button id="thebutton">Hover over me</button>
+    <div id="message" class="hidden">hello</div>
+</body>
+
+</html>

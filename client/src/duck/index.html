@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script type="module">
+        "use strict";
+        const getMessages = () => {
+            const x = localStorage.getItem("messages");
+            if (x == null) return [];
+            return JSON.parse(x) ?? [];
+        };
+        const setMessages = (msgs) =>
+            localStorage.setItem("messages", JSON.stringify(msgs));
+
+        const addMessage = (msg) => {
+            const msgs = getMessages();
+            msgs.push(msg);
+            setMessages(msgs);
+            return msgs;
+        };
+
+        const formatDate = (time) =>
+            new Date(time).toLocaleString("da-DK", {
+                timeStyle: "short",
+                dateStyle: "short",
+            });
+
+        const setLog = () => {
+            const nodes = getMessages().map((i) => {
+                const el = document.createElement("p");
+                el.textContent = `[${formatDate(i.time)} ${i.text}]`;
+                return el;
+            });
+            document.getElementById("log").replaceChildren(...nodes);
+        };
+
+        document.getElementById("submit").addEventListener("click", () => {
+            const text = document.getElementById("textarea").value;
+            if (text == null) return;
+            if (text === "") return;
+            addMessage({text, time: new Date()});
+            setLog();
+        });
+
+        window.addEventListener("load", () => {
+            setLog();
+        });
+    </script>
+</head>
+
+<body>
+    <!-- ngl i actually like web1 aesthetic of not doing any styles -->
+    <nav></nav>
+    <br />
+    <main>
+        <div>
+            <label for="textarea">
+                <h2>Please explain your problem for Mr Duck</h2>
+            </label>
+            <br />
+            <textarea id="textarea" type="text" placeholder="quack"></textarea>
+            <br />
+            <button id="submit">Add</button>
+        </div>
+        <br />
+        <div>
+            <label for="log"> Previous messages: </label>
+            <div id="log"></div>
+        </div>
+    </main>
+</body>
+
+</html>
